@@ -1,4 +1,4 @@
-# Anti-Training with Sacrificial Information 
+# About 
 
 
 # Contributors 
