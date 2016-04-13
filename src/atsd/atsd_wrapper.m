@@ -1,12 +1,15 @@
-% function f = atsd_wrapper(x)
-x = [10, 2];
+function f = atsd_wrapper(x)
+
+
+global DATASET;
 
 split = .8;
 
-X = load('~/Git/ClassificationDatasets/csv/mushroom.csv');
-data = X(:, 1:end-1);
-labels  = X(:, end);
+X = load(DATASET);   % DATASET is a global var in the main experimenter
 
+% load the data and split
+data = X(:, 1:end-1); 
+labels  = X(:, end);  % labels are in the last dimension 
 if length(unique(labels)) ~= 2
   error('Must be a two class problem.');
 end
@@ -27,28 +30,35 @@ labels_test = labels(m+1:end);
 
 param.C = x(1);
 param.ker = x(2);
+disp([' ', num2str(x(1)), '  ', num2str(x(2))])
 
-% train svm 
+
+% f_plus
+disp('Fplus')
 svm_struct = svmtrain(data_train, labels_train, ...
   'kernel_function', 'rbf', ...
   'rbf_sigma', param.ker, ...
   'boxconstraint', param.C, ...
-  'method', 'SMO');
-
-% f_plus
+  'method', 'SMO', ...
+  'tolkkt', 1e-4, ...
+  'kktviolationlevel', 0.15);
 yhat = svmclassify(svm_struct, data_test);
-[sen, spe, err] = calc_statistics(labels_test, yhat);
+[fp_sen, fp_spe, fp_err] = calc_statistics(labels_test, yhat);
 
 % f_minus
-svm_struct = svmtrain(data_train, sign(randn(m, 1)), ...
+disp('Fminus')
+yhat_bad = sign(randn(m, 1));
+svm_struct = svmtrain(data_train, yhat_bad, ...
   'kernel_function', 'rbf', ...
   'rbf_sigma', param.ker, ...
   'boxconstraint', param.C, ...
-  'method', 'SMO');
-yhat = svmclassify(svm_struct, data_test);
-[sen, spe, err] = calc_statistics(labels_test, yhat);
+  'method', 'SMO', ...
+  'tolkkt', 1e-5, ...
+  'kktviolationlevel', 0.35);
+yhat = svmclassify(svm_struct, data_train);
+[fm_sen, fm_spe, fm_err] = calc_statistics(yhat_bad, yhat);
 
 
-f_plus = [err; c_sen; s_spe];
-f_minus = [abs(.5-r_err); abs(.5-r_c_sen); abs(.5-r_s_spe)];
+f_plus = [fp_err; fp_sen; fp_spe];
+f_minus = [abs(.5-fm_err); abs(.5-fm_sen); abs(.5-fm_spe)];
 f = [f_plus; f_minus];

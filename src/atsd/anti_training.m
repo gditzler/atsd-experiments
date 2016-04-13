@@ -1,4 +1,4 @@
-function anti_training(params, data, labels)
+function [x, f, exitflag] = anti_training(params)
 % params
 %   .PopulationSize
 %   .nvar
@@ -6,16 +6,14 @@ function anti_training(params, data, labels)
 % labels 
 %
 
-nvar = params;
 Aineq = [];
 bineq = [];
 A = [];
 b = [];
-lb = [1e-3;1e-3];
-ub = [1;1];
+lb = [1e-2; 1e-2];
+ub = [1000; 2];
 
-optimoptions = gaoptimset('PopulationSize', params.PopulationSize, ...
-                          'PlotFcns', @gaplotpareto, ...
-                          'UseParallel', 'always');
-[x, f, exitflag] = gamultiobj(@atsd_wrapper, params.nvar, Aineq, ...
-                              bineq, A, b, lb, ub, optimoptions);
+optimoptions = gaoptimset('PopulationSize', params.PopulationSize, 'PlotFcns', @gaplotpareto);
+  %, 'UseParallel', 'always');
+[x, f, exitflag] = gamultiobj(@atsd_wrapper, params.nvar, Aineq, bineq, A, b, lb, ub, optimoptions);
+
