@@ -1,13 +1,14 @@
-function f = atsd_wrapper(x)
+function f = atsd_wrapper(x, dataset)
 
 
 global DATASETZ;
 
 split = .8;
-%disp(['The data set is ', DATASETZ])
+disp(['The data set is ', dataset]);
 %class(DATASETZ)
-X = load('~/Git/ClassificationDatasets/csv/blood.csv');   % DATASET is a global var in the main experimenter
-%X = load(DATASETZ);   % DATASET is a global var in the main experimenter
+
+% X = load('~/Git/ClassificationDatasets/csv/blood.csv');   
+X = load(dataset);   % DATASET is a global var in the main experimenter
 
 % load the data and split
 data = X(:, 1:end-1); 

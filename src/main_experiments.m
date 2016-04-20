@@ -72,11 +72,13 @@ all_datas = {'acute-inflammation';
 % SVM specific
 params.nvar = 2;
 params.PopulationSize = 20;
+ 
+parpool(2);
 
 global DATASETZ;
 
 DATASETZ = [data_pth, 'blood.csv'];
 
-% [x, f, exitflag] = anti_training(params);
+[x, f, exitflag] = anti_training(params);
 
 
