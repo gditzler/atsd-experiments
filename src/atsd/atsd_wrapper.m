@@ -4,7 +4,7 @@ function f = atsd_wrapper(x, dataset)
 global DATASETZ;
 
 split = .8;
-disp(['The data set is ', dataset]);
+%disp(['The data set is ', dataset]);
 %class(DATASETZ)
 
 % X = load('~/Git/ClassificationDatasets/csv/blood.csv');   
@@ -16,7 +16,7 @@ labels  = X(:, end);  % labels are in the last dimension
 if length(unique(labels)) ~= 2
   error('Must be a two class problem.');
 end
-%data = zscore(data);
+data = zscore(data);
 
 [ns, nf] = size(data);
 q = randperm(ns);
