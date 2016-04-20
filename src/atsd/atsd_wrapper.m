@@ -1,11 +1,13 @@
 function f = atsd_wrapper(x)
 
 
-global DATASET;
+global DATASETZ;
 
 split = .8;
-
-X = load(DATASET);   % DATASET is a global var in the main experimenter
+%disp(DATASETZ)
+%class(DATASETZ)
+X = load('~/Git/ClassificationDatasets/csv/blood.csv');   % DATASET is a global var in the main experimenter
+%X = load(DATASETZ);   % DATASET is a global var in the main experimenter
 
 % load the data and split
 data = X(:, 1:end-1); 
@@ -30,8 +32,9 @@ labels_test = labels(m+1:end);
 
 param.C = x(1);
 param.ker = x(2);
-disp([' ', num2str(x(1)), '  ', num2str(x(2))])
+%disp([' ', num2str(x(1)), '  ', num2str(x(2))])
 
+options.MaxIter = 100000;
 
 % f_plus
 disp('Fplus')
@@ -41,7 +44,8 @@ svm_struct = svmtrain(data_train, labels_train, ...
   'boxconstraint', param.C, ...
   'method', 'SMO', ...
   'tolkkt', 1e-4, ...
-  'kktviolationlevel', 0.15);
+  'kktviolationlevel', 0.15, ...
+  'options', options);
 yhat = svmclassify(svm_struct, data_test);
 [fp_sen, fp_spe, fp_err] = calc_statistics(labels_test, yhat);
 
@@ -54,7 +58,8 @@ svm_struct = svmtrain(data_train, yhat_bad, ...
   'boxconstraint', param.C, ...
   'method', 'SMO', ...
   'tolkkt', 1e-5, ...
-  'kktviolationlevel', 0.35);
+  'kktviolationlevel', 0.15,...
+  'options', options);
 yhat = svmclassify(svm_struct, data_train);
 [fm_sen, fm_spe, fm_err] = calc_statistics(yhat_bad, yhat);
 
@@ -62,3 +67,4 @@ yhat = svmclassify(svm_struct, data_train);
 f_plus = [fp_err; fp_sen; fp_spe];
 f_minus = [abs(.5-fm_err); abs(.5-fm_sen); abs(.5-fm_spe)];
 f = [f_plus; f_minus];
+f = [f_plus];

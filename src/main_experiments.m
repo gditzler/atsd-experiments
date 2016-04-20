@@ -10,8 +10,10 @@ data_pth = '~/Git/ClassificationDatasets/csv/';
 params.nvar = 2;
 params.PopulationSize = 20;
 
-global DATASET;
+global DATASETZ;
 
-DATASET = [data_pth, 'blood.csv'];
+DATASETZ = [data_pth, 'blood.csv'];
 
 [x, f, exitflag] = anti_training(params);
+
+
