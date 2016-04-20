@@ -4,7 +4,7 @@ function f = atsd_wrapper(x)
 global DATASETZ;
 
 split = .8;
-%disp(DATASETZ)
+%disp(['The data set is ', DATASETZ])
 %class(DATASETZ)
 X = load('~/Git/ClassificationDatasets/csv/blood.csv');   % DATASET is a global var in the main experimenter
 %X = load(DATASETZ);   % DATASET is a global var in the main experimenter
@@ -15,6 +15,7 @@ labels  = X(:, end);  % labels are in the last dimension
 if length(unique(labels)) ~= 2
   error('Must be a two class problem.');
 end
+%data = zscore(data);
 
 [ns, nf] = size(data);
 q = randperm(ns);
@@ -37,7 +38,7 @@ param.ker = x(2);
 options.MaxIter = 100000;
 
 % f_plus
-disp('Fplus')
+%disp('Fplus')
 svm_struct = svmtrain(data_train, labels_train, ...
   'kernel_function', 'rbf', ...
   'rbf_sigma', param.ker, ...
@@ -50,7 +51,7 @@ yhat = svmclassify(svm_struct, data_test);
 [fp_sen, fp_spe, fp_err] = calc_statistics(labels_test, yhat);
 
 % f_minus
-disp('Fminus')
+% disp('Fminus')
 yhat_bad = sign(randn(m, 1));
 svm_struct = svmtrain(data_train, yhat_bad, ...
   'kernel_function', 'rbf', ...
@@ -64,7 +65,8 @@ yhat = svmclassify(svm_struct, data_train);
 [fm_sen, fm_spe, fm_err] = calc_statistics(yhat_bad, yhat);
 
 
-f_plus = [fp_err; fp_sen; fp_spe];
-f_minus = [abs(.5-fm_err); abs(.5-fm_sen); abs(.5-fm_spe)];
+% f_plus = [fp_err; 1-fp_sen; 1-fp_spe];
+f_plus = [1-fp_sen; 1-fp_spe];
+f_minus = [abs(.5-fm_err)];
 f = [f_plus; f_minus];
-f = [f_plus];
+%f = [f_plus];
