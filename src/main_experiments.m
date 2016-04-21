@@ -65,12 +65,15 @@ parpool(50);
 
 global DATASETZ;
 
-
 for i = 1:length(all_datas)
   DATASETZ = [data_pth, all_datas{i}, '.csv'];
   disp(['Running ', DATASETZ])
-  [x, f, exitflag] = anti_training(params);
-  save(['output/result_', all_datas{i}, '.mat']);
+  try 
+    [x, f, exitflag] = anti_training(params);
+    save(['output/result_', all_datas{i}, '.mat']);
+  catch 
+    disp(['   Error in ', all_datas{i}]);
+  end
 end
 
 
