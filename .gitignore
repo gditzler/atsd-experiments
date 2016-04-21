@@ -4,4 +4,6 @@
 *.pdf
 *.eps
 
+# folders 
+src/output/
 
