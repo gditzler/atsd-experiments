@@ -15,10 +15,8 @@ all_datas = {'acute-inflammation';
   'breast-cancer-wisc-prog';
   'breast-cancer-wisc';
   'breast-cancer';
-  'chess-krvkp';
   'congressional-voting';
   'conn-bench-sonar-mines-rocks';
-  'connect-4';
   'credit-approval';
   'cylinder-bands';
   'echocardiogram';
@@ -28,9 +26,7 @@ all_datas = {'acute-inflammation';
   'hepatitis';
   'ilpd-indian-liver';
   'ionosphere';
-  'magic';
   'mammographic';
-  'miniboone';
   'molec-biol-promoter';
   'mushroom';
   'musk-1';
@@ -43,16 +39,13 @@ all_datas = {'acute-inflammation';
   'planning';
   'ringnorm';
   'spambase';
-  'spect_test';
   'spect_train';
-  'spectf_test';
   'spectf_train';
   'statlog-australian-credit';
   'statlog-german-credit';
   'statlog-heart';
   'tic-tac-toe';
   'titanic';
-  'trains';
   'twonorm';
   'vertebral-column-2clases'};
 
@@ -65,7 +58,7 @@ moo = 1;            % multi-objecive or single objective
 % parallel processing 
 if moo 
   delete(gcp('nocreate'));  
-  parpool(50);
+  parpool(50, 'IdleTimeout', 180);
 end
 
 global DATASETZ;
@@ -88,5 +81,7 @@ for i = 1:length(all_datas)
     disp(['   Error in ', all_datas{i}]);
   end
 end
+
+
 
 
