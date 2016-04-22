@@ -59,9 +59,14 @@ all_datas = {'acute-inflammation';
 % SVM specific
 params.nvar = 2;
 params.PopulationSize = 20;
+moo = 1;            % multi-objecive or single objective
 
-delete(gcp('nocreate'));
-parpool(50);
+% open up the parallel pool for moo only. simulated annealing does not use
+% parallel processing 
+if moo 
+  delete(gcp('nocreate'));  
+  parpool(50);
+end
 
 global DATASETZ;
 
@@ -69,7 +74,15 @@ for i = 1:length(all_datas)
   DATASETZ = [data_pth, all_datas{i}, '.csv'];
   disp(['Running ', DATASETZ])
   try 
-    [x, f, exitflag] = anti_training(params);
+    % some of the data sets throw an error with matlabs support vector
+    % machine, so catch the error rather breaking the program
+    [x, f, exitflag] = anti_training(params, moo);
+    svstr = ['output/result_', all_datas{i}];
+    if moo
+      svstr = [svstr, '_moo.mat'];
+    else
+      svstr = [svstr, '_soo.mat'];
+    end
     save(['output/result_', all_datas{i}, '.mat']);
   catch 
     disp(['   Error in ', all_datas{i}]);
