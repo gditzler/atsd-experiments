@@ -52,7 +52,7 @@ all_datas = {'acute-inflammation';
 % SVM specific
 params.nvar = 2;
 params.PopulationSize = 20;
-moo = 1;            % multi-objecive or single objective
+moo = 0;            % multi-objecive or single objective
 
 % open up the parallel pool for moo only. simulated annealing does not use
 % parallel processing 
@@ -76,7 +76,7 @@ for i = 1:length(all_datas)
     else
       svstr = [svstr, '_soo.mat'];
     end
-    save(['output/result_', all_datas{i}, '.mat']);
+    save(svstr);
   catch 
     disp(['   Error in ', all_datas{i}]);
   end

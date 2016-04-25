@@ -17,7 +17,7 @@ if moo == 1
     params.nvar, Aineq, bineq, A, b, lb, ub, optimoptions);
 else
   optimoptions = saoptimset();
-  optimoptions = saoptimset(optimoptions, 'MaxIter', 200); 
+  optimoptions = saoptimset(optimoptions, 'MaxIter', 1000); 
   [x, f, exitflag] = simulannealbnd(@(x)(atsd_wrapper_soo(x,DATASETZ)), ...
     [1, .5], lb, ub, optimoptions);
 end
