@@ -64,9 +64,8 @@ svm_struct = svmtrain(data_train, yhat_bad, ...
 yhat = svmclassify(svm_struct, data_train);
 [fm_sen, fm_spe, fm_err] = calc_statistics(yhat_bad, yhat);
 
-
-% f_plus = [fp_err; 1-fp_sen; 1-fp_spe];
-f_plus = [1-fp_sen; 1-fp_spe];
+f_plus = [fp_err];
+%f_plus = [1-fp_sen; 1-fp_spe];
 f_minus = [abs(.5-fm_err)];
 f = sum([f_plus; lambda*f_minus]);
 %f = [f_plus];
