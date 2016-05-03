@@ -11,9 +11,6 @@ function [sensitivity, specificity, error] = calc_statistics(y_true, y_hat)
 %      sensitivity 
 %      specificity 
 %      error      
-%
-%  Written by Gregory Ditzler
-% 
 c_mat = confusionmat(y_true, y_hat);
 error = 1 - sum(diag(c_mat))/sum(sum(c_mat));
 sensitivity = c_mat(1,1)/(c_mat(1,1)+c_mat(2,1));
