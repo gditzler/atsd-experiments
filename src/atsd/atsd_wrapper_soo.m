@@ -1,5 +1,4 @@
-function f = atsd_wrapper_soo(x, dataset)
-lambda = .5;
+function f = atsd_wrapper_soo(x, dataset, lambda)
 
 
 split = .8;

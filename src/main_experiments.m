@@ -4,7 +4,7 @@ close all;
 
 addpath('atsd/');
 addpath('utils/');
-data_pth = '/scratch/ditzler/Git/ClassificationDatasets/csv/';
+data_pth = '~/Git/ClassificationDatasets/csv/';
 
 all_datas = {'acute-inflammation';
   'acute-nephritis';
@@ -52,16 +52,19 @@ all_datas = {'acute-inflammation';
 % SVM specific
 params.nvar = 2;
 params.PopulationSize = 20;
-moo = 0;            % multi-objecive or single objective
+moo = 1;            % multi-objecive or single objective
 
 % open up the parallel pool for moo only. simulated annealing does not use
 % parallel processing 
-if moo 
-  delete(gcp('nocreate'));  
-  parpool(50, 'IdleTimeout', 180);
+if moo== 1 || moo == 3
+ delete(gcp('nocreate'));  
+ parpool(50, 'IdleTimeout', 180);
 end
 
 global DATASETZ;
+global LAMBDA;
+
+LAMBDA = .5;
 
 for i = 1:length(all_datas)
   DATASETZ = [data_pth, all_datas{i}, '.csv'];
@@ -71,10 +74,12 @@ for i = 1:length(all_datas)
     % machine, so catch the error rather breaking the program
     [x, f, exitflag] = anti_training(params, moo);
     svstr = ['output/result_', all_datas{i}];
-    if moo
+    if moo == 1
       svstr = [svstr, '_moo.mat'];
-    else
-      svstr = [svstr, '_soo.mat'];
+    elseif moo == 2
+      svstr = [svstr, '_soo_sa.mat'];
+    elseif moo == 3
+      svstr = [svstr, '_soo_ga.mat'];
     end
     save(svstr);
   catch 
