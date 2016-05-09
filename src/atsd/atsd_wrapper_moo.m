@@ -1,4 +1,4 @@
-function f = atsd_wrapper(x, dataset)
+function f = atsd_wrapper_moo(x, dataset)
 
 
 split = .8;
@@ -57,8 +57,24 @@ yhat = svmclassify(svm_struct, data_train);
 [fm_sen, fm_spe, fm_err] = calc_statistics(yhat_bad, yhat);
 
 
-%f_plus = [fp_err];
+%%%
+% EXP 1 
+f_plus = fp_err;
+f_minus = [];
+
+%%%
+% EXP 2 
+f_plus = fp_err;
+f_minus = abs(.5-fm_err);
+
+%%%
+% EXP 3 
 f_plus = [1-fp_sen; 1-fp_spe; fp_err];
 f_minus = [abs(.5-fm_err)];
+
+%%%
+% EXP 4 
+f_plus = [1-fp_sen; 1-fp_spe; fp_err];
+f_minus = [abs(.5-fm_err); abs(.5-fm_sen); abs(.5-fm_spe)];
+
 f = [f_plus; f_minus];
-%f = [f_plus];

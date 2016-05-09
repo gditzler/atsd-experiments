@@ -6,9 +6,7 @@ addpath('atsd/');
 addpath('utils/');
 data_pth = '/scratch/ditzler/Git/ClassificationDatasets/csv/';
 
-all_datas = {'acute-inflammation';
-  'acute-nephritis';
-  'balloons';
+all_datas = {
   'bank';
   'blood';
   'breast-cancer-wisc-diag';
@@ -24,11 +22,9 @@ all_datas = {'acute-inflammation';
   'haberman-survival';
   'heart-hungarian';
   'hepatitis';
-  'ilpd-indian-liver';
   'ionosphere';
   'mammographic';
   'molec-biol-promoter';
-  'mushroom';
   'musk-1';
   'oocytes_merluccius_nucleus_4d';
   'oocytes_trisopterus_nucleus_2f';
@@ -39,12 +35,10 @@ all_datas = {'acute-inflammation';
   'planning';
   'ringnorm';
   'spambase';
-  'spect_train';
   'spectf_train';
   'statlog-australian-credit';
   'statlog-german-credit';
   'statlog-heart';
-  'tic-tac-toe';
   'titanic';
   'twonorm';
   'vertebral-column-2clases'};
@@ -75,7 +69,7 @@ for i = 1:length(all_datas)
     [x, f, exitflag] = anti_training(params, moo);
     svstr = ['output/result_', all_datas{i}];
     if moo == 1
-      svstr = [svstr, '_moo.mat'];
+      svstr = [svstr, '_moo_exp01.mat'];
     elseif moo == 2
       svstr = [svstr, '_soo_sa.mat'];
     elseif moo == 3
