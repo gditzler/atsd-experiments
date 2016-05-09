@@ -4,7 +4,7 @@ close all;
 
 addpath('atsd/');
 addpath('utils/');
-data_pth = '~/Git/ClassificationDatasets/csv/';
+data_pth = '/scratch/ditzler/Git/ClassificationDatasets/csv/';
 
 all_datas = {'acute-inflammation';
   'acute-nephritis';
