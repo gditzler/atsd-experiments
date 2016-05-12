@@ -45,8 +45,8 @@ all_datas = {
 
 % SVM specific
 params.nvar = 2;
-params.PopulationSize = 20;
-moo = 1;            % multi-objecive or single objective
+params.PopulationSize = 50;
+moo = 1;    % multi-objecive or single objective
 
 % open up the parallel pool for moo only. simulated annealing does not use
 % parallel processing 
