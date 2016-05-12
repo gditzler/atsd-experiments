@@ -6,4 +6,6 @@
 
 # folders 
 # src/output/
-
+src/eps
+src/pdf
+src/fig
