@@ -59,18 +59,18 @@ yhat = svmclassify(svm_struct, data_train);
 
 %%%
 % EXP 1 
-f_plus = fp_err;
-f_minus = [];
+%f_plus = fp_err;
+%f_minus = [];
 
 %%%
 % EXP 2 
-f_plus = fp_err;
-f_minus = abs(.5-fm_err);
+%f_plus = fp_err;
+%f_minus = abs(.5-fm_err);
 
 %%%
 % EXP 3 
-f_plus = [1-fp_sen; 1-fp_spe; fp_err];
-f_minus = [abs(.5-fm_err)];
+%f_plus = [1-fp_sen; 1-fp_spe; fp_err];
+%f_minus = [abs(.5-fm_err)];
 
 %%%
 % EXP 4 

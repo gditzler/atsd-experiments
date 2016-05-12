@@ -46,7 +46,7 @@ all_datas = {
 % SVM specific
 params.nvar = 2;
 params.PopulationSize = 50;
-moo = 1;    % multi-objecive or single objective
+moo = 1;            % multi-objecive or single objective
 
 % open up the parallel pool for moo only. simulated annealing does not use
 % parallel processing 
@@ -67,9 +67,9 @@ for i = 1:length(all_datas)
     % some of the data sets throw an error with matlabs support vector
     % machine, so catch the error rather breaking the program
     [x, f, exitflag] = anti_training(params, moo);
-    svstr = ['output/result_', all_datas{i}];
+    svstr = ['outputs/result_', all_datas{i}];
     if moo == 1
-      svstr = [svstr, '_moo_exp01.mat'];
+      svstr = [svstr, '_moo_exp04.mat'];
     elseif moo == 2
       svstr = [svstr, '_soo_sa.mat'];
     elseif moo == 3
