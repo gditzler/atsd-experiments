@@ -59,6 +59,7 @@ global DATASETZ;
 global LAMBDA;
 
 LAMBDA = .5;
+timerz =[];
 
 for i = 1:length(all_datas)
   DATASETZ = [data_pth, all_datas{i}, '.csv'];
@@ -66,10 +67,13 @@ for i = 1:length(all_datas)
   try 
     % some of the data sets throw an error with matlabs support vector
     % machine, so catch the error rather breaking the program
+    tic;
     [x, f, exitflag] = anti_training(params, moo);
+    timerz(end+1) = clock;
+    [xm, fm] = svm_search_matlab('~/Git/ClassificationDatasets/csv/bank.csv');
     svstr = ['outputs/result_', all_datas{i}];
     if moo == 1
-      svstr = [svstr, '_moo_exp04.mat'];
+      svstr = [svstr, '_moo_exp01.mat'];
     elseif moo == 2
       svstr = [svstr, '_soo_sa.mat'];
     elseif moo == 3
