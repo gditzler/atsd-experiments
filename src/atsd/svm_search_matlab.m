@@ -1,6 +1,6 @@
 function [x, f] =svm_search_matlab(dataset)
 
-n_runs = 5;
+n_runs = 10;
 
 X = load(dataset);   % DATASET is a global var in the main experimenter
 
