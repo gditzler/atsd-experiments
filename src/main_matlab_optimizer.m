@@ -60,7 +60,7 @@ for i = 1:length(all_datas)
     % some of the data sets throw an error with matlabs support vector
     % machine, so catch the error rather breaking the program
     tic;
-    [x, f] = svm_search_matlab('~/Git/ClassificationDatasets/csv/bank.csv');
+    [x, f] = svm_search_matlab(DATASETZ);
     timerz(end+1) = toc;
     svstr = ['outputs/result_', all_datas{i}, '_matlab.mat'];
     save(svstr);
