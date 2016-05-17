@@ -32,7 +32,7 @@ param.ker = x(2);
 options.MaxIter = 100000;
 
 % f_plus
-svm_struct = svmtrain(data_train, labels_train, ...
+svm_struct = fitcsvm(data_train, labels_train, ...
   'kernel_function', 'rbf', ...
   'rbf_sigma', param.ker, ...
   'boxconstraint', param.C, ...
@@ -40,12 +40,26 @@ svm_struct = svmtrain(data_train, labels_train, ...
   'tolkkt', 1e-4, ...
   'kktviolationlevel', 0.15, ...
   'options', options);
-yhat = svmclassify(svm_struct, data_test);
-[fp_sen, fp_spe, fp_err] = calc_statistics(labels_test, yhat);
+yhat = ClassificationSVM(svm_struct, data_test);
+% [fp_sen, fp_spe, fp_err] = calc_statistics(labels_test, yhat);
+sts = confusionmatStats(labels_test, yhat);
+fp_sen = mean(sts.sensitivity);
+fp_fsc = mean(sts.Fscore);
+fp_spe = mean(sts.specificity);
+fp_err = 1-sts.accuracy(1);
+if isnan(fp_sen)
+  fp_sen = 0;
+end
+if isnan(fp_spe)
+  fp_spe = 0;
+end
+if isnan(fp_fsc)
+  fp_fsc = 0;
+end
 
 % f_minus
 yhat_bad = sign(randn(m, 1));
-svm_struct = svmtrain(data_train, yhat_bad, ...
+svm_struct = fitcsvm(data_train, yhat_bad, ...
   'kernel_function', 'rbf', ...
   'rbf_sigma', param.ker, ...
   'boxconstraint', param.C, ...
@@ -53,14 +67,27 @@ svm_struct = svmtrain(data_train, yhat_bad, ...
   'tolkkt', 1e-5, ...
   'kktviolationlevel', 0.15,...
   'options', options);
-yhat = svmclassify(svm_struct, data_train);
-[fm_sen, fm_spe, fm_err] = calc_statistics(yhat_bad, yhat);
-
+yhat = ClassificationSVM(svm_struct, data_train);
+% [fm_sen, fm_spe, fm_err] = calc_statistics(yhat_bad, yhat);
+sts = confusionmatStats(yhat_bad, yhat);
+fm_sen = mean(sts.sensitivity);
+fm_spe = mean(sts.specificity);
+fm_fsc = mean(sts.Fscore);
+fm_err = 1-sts.accuracy(1);
+if isnan(fm_sen)
+  fm_sen = 0;
+end
+if isnan(fm_spe)
+  fm_spe = 0;
+end
+if isnan(fm_fsc)
+  fm_fsc = 0;
+end
 
 %%%
 % EXP 1 
-%f_plus = fp_err;
-%f_minus = [];
+f_plus = fp_err;
+f_minus = [];
 
 %%%
 % EXP 2 

@@ -39,16 +39,27 @@ close all
 
 load outputs/cross_validation_tables.mat
 
-min_errors = [all_errors(:, 1), min(all_errors, [], 2)];
+min_errors = [all_errors(:, 1), min(all_errors(:,2:4), [], 2)];
 [nd, na] = size(all_errors);
 [hZtest, pZtest, pFtest, ranks] = friedman_demsar(all_errors, 'two', .05);
-[z, p] = wilcoxon_demsar(min_errors, 'two'); 
+[z, p] = wilcoxon_demsar(min_ errors, 'two'); 
 
 for j = 1:size(all_errors, 1)
   str = [all_datas_2{j}, ' & '];
+  data = load(['~/Git/ClassificationDatasets/csv/', all_datas_2{j}, '.csv']);
+  
+  str = [str, num2str(size(data,1)), ' & ', num2str(size(data,2)-1), ' & '];
+  
   for i = 1:size(all_errors, 2)
-    str = [str, num2str(all_errors(j,i)), ' (', num2str(ranks(j,i)), ') & '];
+    str = [str, num2str(round(1000*all_errors(j,i))/10), ' (', num2str(ranks(j,i)), ') & '];
   end
+  merr = min(all_errors(j,2:4));
+  if merr < all_errors(j,1)
+    str = [str, ' \bf ', num2str(round(1000*merr)/10), ' & '];
+  else
+    str = [str, num2str(round(1000*merr)/10), ' & '];
+  end
+  
   str = [str(1:end-2), ' \\'];
   disp(str)
 end
@@ -107,7 +118,7 @@ all_datas_2 = {
 
 n_data = length(all_datas_2);
 
-mm = {'rx', 'bo', 'ks', 'mp'};
+mm = {'rx', 'bo', 'ks', 'mp', 'c*'};
 
 
 for nn = 1:n_data
@@ -119,7 +130,9 @@ for nn = 1:n_data
     load(['outputs/result_', all_datas_2{nn}, '_moo_exp0', num2str(ee), '.mat']);
     plot(log(x(:,1)), x(:,2), mm{ee}, 'MarkerSize', 15);        
   end
-  legend('None', 'F1', 'F2','F3', 'Location', 'best')
+  load(['outputs/result_', all_datas_2{nn}, '_matlab.mat']);
+  plot(log(x(1)), x(2), mm{end}, 'MarkerSize', 15);
+  legend('None', 'F1', 'F2','F3', 'Fmin', 'Location', 'best')
   %title(all_datas_2{nn});
   xlabel('log(C)', 'FontSize', 20)
   ylabel('\sigma', 'FontSize', 30)
