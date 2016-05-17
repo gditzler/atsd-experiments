@@ -18,7 +18,7 @@ all_datas = {
   'credit-approval';
   'cylinder-bands';
   'echocardiogram';
-  'fertility';
+  %'fertility';
   'haberman-survival';
   'heart-hungarian';
   'hepatitis';
@@ -31,7 +31,7 @@ all_datas = {
   'ozone';
   'parkinsons';
   'pima';
-  'pittsburg-bridges-T-OR-D';
+  %'pittsburg-bridges-T-OR-D';
   'planning';
   'ringnorm';
   'spambase';
@@ -69,11 +69,10 @@ for i = 1:length(all_datas)
     % machine, so catch the error rather breaking the program
     tic;
     [x, f, exitflag] = anti_training(params, moo);
-    timerz(end+1) = clock;
-    [xm, fm] = svm_search_matlab('~/Git/ClassificationDatasets/csv/bank.csv');
+    timerz(end+1) = toc;
     svstr = ['outputs/result_', all_datas{i}];
     if moo == 1
-      svstr = [svstr, '_moo_exp01.mat'];
+      svstr = [svstr, '_moo_exp04.mat'];
     elseif moo == 2
       svstr = [svstr, '_soo_sa.mat'];
     elseif moo == 3
