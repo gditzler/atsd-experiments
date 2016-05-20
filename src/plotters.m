@@ -42,7 +42,7 @@ load outputs/cross_validation_tables.mat
 min_errors = [all_errors(:, 1), min(all_errors(:,2:4), [], 2)];
 [nd, na] = size(all_errors);
 [hZtest, pZtest, pFtest, ranks] = friedman_demsar(all_errors, 'two', .05);
-[z, p] = wilcoxon_demsar(min_ errors, 'two'); 
+[z, p] = wilcoxon_demsar(min_errors, 'two'); 
 
 for j = 1:size(all_errors, 1)
   str = [all_datas_2{j}, ' & '];
