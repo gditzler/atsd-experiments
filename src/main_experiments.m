@@ -62,7 +62,7 @@ LAMBDA = .5;
 timerz =[];
 
 for i = 1:length(all_datas)
-  DATASETZ = [data_pth, all_datas{i}, '.csv'];
+  DATASETZ = [data_pth, all_datas{i}, '_train.csv'];
   disp(['Running ', DATASETZ])
   try 
     % some of the data sets throw an error with matlabs support vector
