@@ -47,8 +47,8 @@ n_data = length(all_datas_2);
 all_parameters = cell(n_data, 5);
 all_errors = zeros(n_data, 5);
 
-delete(gcp('nocreate'));
-parpool(4);
+% delete(gcp('nocreate'));
+% parpool(4);
 
 % loop over all of the data sets
 for nn = 1:n_data
@@ -71,7 +71,7 @@ for nn = 1:n_data
       % measure the error for the `np-th` parameter then check if is the
       % smallest we've come across 
       %current_err = run_cv(data, x(np, 1), x(np, 2));
-      current_err = run_alg_params(data_tr, data_te, yte, x(np, 1), x(np, 2));
+      current_err = run_alg_params(data_tr, data_te, x(np, 1), x(np, 2));
       if current_err<err
         err = current_err;
         min_param = x(np, :);
@@ -86,7 +86,7 @@ for nn = 1:n_data
   
   load(['outputs/result_', all_datas_2{nn}, '_matlab.mat']);
   %current_err = run_cv(data, x(1), x(2));
-  current_err = run_alg_params(data_tr, data_te, yte, x(1), x(2));
+  current_err = run_alg_params(data_tr, data_te, x(1), x(2));
   str = [str, num2str(current_err), ' & '];
   all_errors(nn, 5) = current_err;
   all_parameters{nn, 5} = x;
@@ -96,7 +96,7 @@ for nn = 1:n_data
   
 end
 
-delete(gcp);
+% delete(gcp);
 clearvars -except all_datas_2 all_errors all_parameters
 save('outputs/cross_validation_tables.mat');
 
