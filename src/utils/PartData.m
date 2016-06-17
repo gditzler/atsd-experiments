@@ -42,8 +42,9 @@ end
 backup_rng = rng;
 
 %Overwrite the random number generator (defaults to Mersenne Twister)
-rng(round(abs(randseed)));
-rand(625,1); %ensure the Mersenne Twister is fully initialized
+% rng(round(abs(randseed)));
+% rand(625,1); %ensure the Mersenne Twister is fully initialized
+rng(randseed);
 
 for i=1:length(filenames)
     %Load the data and split

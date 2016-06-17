@@ -53,22 +53,50 @@ global LAMBDA;
 LAMBDA = .5;
 timerz = [];
 
-for i = 1:length(all_datas)
-  DATASETZ = [data_pth, all_datas{i}, '_train.csv'];
-  disp(['Running ', DATASETZ])
-  try 
-    % some of the data sets throw an error with matlabs support vector
-    % machine, so catch the error rather breaking the program
-    tic;
-    [x, f] = svm_search_matlab(DATASETZ);
-    timerz(end+1) = toc;
-    svstr = ['outputs/result_', all_datas{i}, '_matlab.mat'];
-    save(svstr);
-  catch 
-    disp(['   Error in ', all_datas{i}]);
+n_shuffles = 20;
+
+filenames = {};
+for n = 1:nd
+  filenames{n} = [data_pth, all_datas{n}, '.csv'];
+end
+PartData(randseed, .8, filenames);
+
+
+for n = 1:n_shuffles
+  PartData(n, .8, filenames);
+  for i = 1:length(all_datas)
+    DATASETZ = [data_pth, all_datas{i}, '_train.csv'];
+    disp(['Running ', DATASETZ])
+    try 
+      % some of the data sets throw an error with matlabs support vector
+      % machine, so catch the error rather breaking the program
+      tic;
+      [x, f] = svm_search_matlab(DATASETZ);
+      timerz(end+1) = toc;
+      
+      datatr = load([data_pth, all_datas{i}, '_test.csv']);
+      datate = load([data_pth, all_datas{i}, '_test.csv']);
+      
+      err_best = 10000000000000;
+      
+      svm_struct = svmtrain(datatr(:, 1:end-1), datatr(:, end), ...
+        'kernel_function', 'rbf', ...
+        'rbf_sigma', x(1), ...
+        'boxconstraint', x(2), ...
+        'method', 'SMO', ...
+        'tolkkt', 1e-4, ...
+        'kktviolationlevel', 0.15, ...
+        'options', options);
+      yhat = svmclassify(svm_struct, datate(:, 1:end-1));
+      err = calc_error(yhat, datate(:, end));
+      
+      svstr = ['outputs/result_', all_datas{i}, '_matlab_', num2str(n),'.mat'];
+      save(svstr);
+    catch 
+      disp(['   Error in ', all_datas{i}]);
+    end
   end
 end
-
 
 
 

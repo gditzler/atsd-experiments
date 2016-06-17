@@ -60,30 +60,65 @@ global LAMBDA;
 
 LAMBDA = .5;
 timerz =[];
+n_shuffles = 20;
 
-for i = 1:length(all_datas)
-  DATASETZ = [data_pth, all_datas{i}, '_train.csv'];
-  disp(['Running ', DATASETZ])
-  try 
-    % some of the data sets throw an error with matlabs support vector
-    % machine, so catch the error rather breaking the program
-    tic;
-    [x, f, exitflag] = anti_training(params, moo);
-    timerz(end+1) = toc;
-    svstr = ['outputs/result_', all_datas{i}];
-    if moo == 1
-      svstr = [svstr, '_moo_exp04.mat'];
-    elseif moo == 2
-      svstr = [svstr, '_soo_sa.mat'];
-    elseif moo == 3
-      svstr = [svstr, '_soo_ga.mat'];
+filenames = {};
+for n = 1:nd
+  filenames{n} = [data_pth, all_datas{n}, '.csv'];
+end
+PartData(randseed, .8, filenames);
+
+
+for n = 1:n_shuffles
+  PartData(n, percent_train, filenames);
+
+  for i = 1:length(all_datas)
+    DATASETZ = [data_pth, all_datas{i}, '_train.csv'];
+    disp(['Running ', DATASETZ])
+    try 
+      % some of the data sets throw an error with matlabs support vector
+      % machine, so catch the error rather breaking the program
+      tic;
+      [x, f, exitflag] = anti_training(params, moo);
+      timerz(end+1) = toc;
+      
+      datatr = load([data_pth, all_datas{i}, '_test.csv']);
+      datate = load([data_pth, all_datas{i}, '_test.csv']);
+      
+      err_best = 10000000000000;
+      
+      for j = 1:size(x, 2)
+        svm_struct = svmtrain(datatr(:, 1:end-1), datatr(:, end), ...
+          'kernel_function', 'rbf', ...
+          'rbf_sigma', x(j, 2), ...
+          'boxconstraint', x(j, 1), ...
+          'method', 'SMO', ...
+          'tolkkt', 1e-4, ...
+          'kktviolationlevel', 0.15, ...
+          'options', options);
+        yhat = svmclassify(svm_struct, datate(:, 1:end-1));
+        err = calc_error(yhat, datate(:, end));
+        if err<err_best
+          err_best = err;
+          min_param = x(j, :);
+        end
+      end
+      
+      
+      svstr = ['outputs/result_', all_datas{i}];
+      if moo == 1
+        svstr = [svstr, '_moo_exp04_', num2str(n),'.mat'];
+      elseif moo == 2
+        svstr = [svstr, '_soo_sa_', num2str(n),'.mat'];
+      elseif moo == 3
+        svstr = [svstr, '_soo_ga_', num2str(n),'.mat'];
+      end
+      save(svstr);
+    catch 
+      disp(['   Error in ', all_datas{i}]);
     end
-    save(svstr);
-  catch 
-    disp(['   Error in ', all_datas{i}]);
   end
 end
-
 
 
 
