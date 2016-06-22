@@ -66,7 +66,7 @@ filenames = {};
 for n = 1:nd
   filenames{n} = [data_pth, all_datas{n}, '.csv'];
 end
-PartData(randseed, .8, filenames);
+% PartData(randseed, .8, filenames);
 
 
 for n = 1:n_shuffles
