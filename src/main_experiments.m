@@ -70,7 +70,7 @@ end
 
 
 for n = 1:n_shuffles
-  PartData(n, percent_train, filenames);
+  PartData(n, .8, filenames);
 
   for i = 1:length(all_datas)
     DATASETZ = [data_pth, all_datas{i}, '_train.csv'];
