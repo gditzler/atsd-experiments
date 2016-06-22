@@ -7,7 +7,7 @@ addpath('utils/');
 data_pth = '/scratch/ditzler/Git/ClassificationDatasets/csv/';
 
 all_datas = {
-  %'bank';
+  'bank';
   'blood';
   'breast-cancer-wisc-diag';
   'breast-cancer-wisc-prog';
@@ -70,11 +70,12 @@ end
 
 
 for n = 1:n_shuffles
+  disp(['Average ', num2str(n), ' of ', num2str(n_shuffles)]);
   PartData(n, .8, filenames);
 
   for i = 1:length(all_datas)
     DATASETZ = [data_pth, all_datas{i}, '_train.csv'];
-    disp(['Running ', DATASETZ])
+    disp(['  -> Running ', DATASETZ])
     try 
       % some of the data sets throw an error with matlabs support vector
       % machine, so catch the error rather breaking the program
