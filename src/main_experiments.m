@@ -52,7 +52,7 @@ moo = 1;            % multi-objecive or single objective
 % parallel processing 
 if moo== 1 || moo == 3
  delete(gcp('nocreate'));  
- parpool(50, 'IdleTimeout', 180);
+ parpool(25, 'IdleTimeout', 180);
 end
 
 global DATASETZ;
@@ -63,7 +63,7 @@ timerz =[];
 n_shuffles = 20;
 
 filenames = {};
-for n = 1:nd
+for n = 1:length(all_datas)
   filenames{n} = [data_pth, all_datas{n}, '.csv'];
 end
 PartData(randseed, .8, filenames);
