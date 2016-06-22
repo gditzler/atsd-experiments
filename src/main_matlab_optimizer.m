@@ -59,7 +59,10 @@ filenames = {};
 for n = 1:nd
   filenames{n} = [data_pth, all_datas{n}, '.csv'];
 end
-PartData(randseed, .8, filenames);
+% PartData(randseed, .8, filenames);
+
+all_errors_mat = zeros(length(all_datas), 1);
+counts_errors_mat = zeros(length(all_datas), 1);
 
 
 for n = 1:n_shuffles
@@ -74,21 +77,26 @@ for n = 1:n_shuffles
       [x, f] = svm_search_matlab(DATASETZ);
       timerz(end+1) = toc;
       
-      datatr = load([data_pth, all_datas{i}, '_test.csv']);
+      datatr = load([data_pth, all_datas{i}, '_train.csv']);
       datate = load([data_pth, all_datas{i}, '_test.csv']);
-      
+        
       err_best = 10000000000000;
-      
+      options.MaxIter = 100000;
+      calc_error = @(actual, prediction)(sum(actual ~= prediction)/length(prediction));
+
       svm_struct = svmtrain(datatr(:, 1:end-1), datatr(:, end), ...
         'kernel_function', 'rbf', ...
-        'rbf_sigma', x(1), ...
-        'boxconstraint', x(2), ...
+        'rbf_sigma', x(2), ...
+        'boxconstraint', x(1), ...
         'method', 'SMO', ...
         'tolkkt', 1e-4, ...
         'kktviolationlevel', 0.15, ...
         'options', options);
       yhat = svmclassify(svm_struct, datate(:, 1:end-1));
-      err = calc_error(yhat, datate(:, end));
+      err_best = calc_error(yhat, datate(:, end));
+      
+      all_errors_mat(i) = all_errors_mat(i) + err_best;
+      counts_errors_mat(i) = counts_errors_mat(i) + 1;
       
       svstr = ['outputs/result_', all_datas{i}, '_matlab_', num2str(n),'.mat'];
       save(svstr);

@@ -72,6 +72,9 @@ end
 
 timerz = zeros(length(all_datas), ftypes);
 
+all_errors_moo = zeros(length(all_datas), ftypes);
+counts_errors_moo = zeros(length(all_datas), ftypes);
+
 for n = 1:n_shuffles
   disp(['Average ', num2str(n), ' of ', num2str(n_shuffles)]);
   PartData(n, .8, filenames);
@@ -111,7 +114,8 @@ for n = 1:n_shuffles
             min_param = x(j, :);
           end
         end
-
+        all_errors_moo(i, a) = all_errors_moo(i, a) + err_best;
+        counts_errors_moo(i, a) = counts_errors_moo(i, a) + 1;
 
         svstr = ['outputs/result_', all_datas{i}];
         if moo == 1
