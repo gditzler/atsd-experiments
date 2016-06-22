@@ -45,7 +45,7 @@ all_datas = {
 
 % SVM specific
 params.nvar = 2;
-params.PopulationSize = 50;
+params.PopulationSize = 25;
 moo = 1;            % multi-objecive or single objective
 
 % open up the parallel pool for moo only. simulated annealing does not use
@@ -60,7 +60,7 @@ global LAMBDA;
 
 LAMBDA = .5;
 timerz =[];
-n_shuffles = 20;
+n_shuffles = 10;
 
 filenames = {};
 for n = 1:length(all_datas)
