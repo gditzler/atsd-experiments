@@ -1,4 +1,4 @@
-function f = atsd_wrapper_moo(x, dataset)
+function f = atsd_wrapper_moo(x, dataset, ftype)
 
 
 split = .8;
@@ -32,7 +32,16 @@ param.ker = x(2);
 options.MaxIter = 100000;
 
 % f_plus
-svm_struct = fitcsvm(data_train, labels_train, ...
+% svm_struct = fitcsvm(data_train, labels_train, ...
+%   'kernel_function', 'rbf', ...
+%   'rbf_sigma', param.ker, ...
+%   'boxconstraint', param.C, ...
+%   'method', 'SMO', ...
+%   'tolkkt', 1e-4, ...
+%   'kktviolationlevel', 0.15, ...
+%   'options', options);
+% yhat = ClassificationSVM(svm_struct, data_test);
+svm_struct = svmtrain(data_train, labels_train, ...
   'kernel_function', 'rbf', ...
   'rbf_sigma', param.ker, ...
   'boxconstraint', param.C, ...
@@ -40,7 +49,9 @@ svm_struct = fitcsvm(data_train, labels_train, ...
   'tolkkt', 1e-4, ...
   'kktviolationlevel', 0.15, ...
   'options', options);
-yhat = ClassificationSVM(svm_struct, data_test);
+yhat = svmclassify(svm_struct, data_test);
+
+
 % [fp_sen, fp_spe, fp_err] = calc_statistics(labels_test, yhat);
 sts = confusionmatStats(labels_test, yhat);
 fp_sen = mean(sts.sensitivity);
@@ -59,16 +70,29 @@ end
 
 % f_minus
 yhat_bad = sign(randn(m, 1));
-svm_struct = fitcsvm(data_train, yhat_bad, ...
+yhat_bad(yhat_bad==0) = 1;
+% svm_struct = fitcsvm(data_train, yhat_bad, ...
+%   'kernel_function', 'rbf', ...
+%   'rbf_sigma', param.ker, ...
+%   'boxconstraint', param.C, ...
+%   'method', 'SMO', ...
+%   'tolkkt', 1e-5, ...
+%   'kktviolationlevel', 0.15,...
+%   'options', options);
+% yhat = ClassificationSVM(svm_struct, data_train);
+% [fm_sen, fm_spe, fm_err] = calc_statistics(yhat_bad, yhat);
+
+svm_struct = svmtrain(data_train, yhat_bad, ...
   'kernel_function', 'rbf', ...
   'rbf_sigma', param.ker, ...
   'boxconstraint', param.C, ...
   'method', 'SMO', ...
-  'tolkkt', 1e-5, ...
-  'kktviolationlevel', 0.15,...
+  'tolkkt', 1e-4, ...
+  'kktviolationlevel', 0.15, ...
   'options', options);
-yhat = ClassificationSVM(svm_struct, data_train);
-% [fm_sen, fm_spe, fm_err] = calc_statistics(yhat_bad, yhat);
+yhat = svmclassify(svm_struct, data_train);
+
+
 sts = confusionmatStats(yhat_bad, yhat);
 fm_sen = mean(sts.sensitivity);
 fm_spe = mean(sts.specificity);
@@ -84,30 +108,31 @@ if isnan(fm_fsc)
   fm_fsc = 0;
 end
 
-%%%
-% EXP 1 
-f_plus = fp_err;
-f_minus = [];
-
-%%%
-% EXP 2 
-%f_plus = fp_err;
-%f_minus = abs(.5-fm_err);
-
-%%%
-% EXP 3 
-%f_plus = [1-fp_sen; 1-fp_spe; fp_err];
-%f_minus = [abs(.5-fm_err)];
-
-%%%
-% EXP 4 
-%f_plus = [1-fp_sen; 1-fp_spe; fp_err];
-%f_minus = [abs(.5-fm_err); abs(.5-fm_sen); abs(.5-fm_spe)];
-
-%%%
-% EXP 5 
-%f_plus = [1-fp_sen; 1-fp_spe; fp_err];
-%f_minus = [abs(.5-fm_err); abs(.5-fm_sen); abs(.5-fm_spe)];
-
+if ftype==1
+  %%%
+  % EXP 1 
+  f_plus = fp_err;
+  f_minus = [];
+elseif ftype==2
+  %%%
+  % EXP 2 
+  f_plus = fp_err;
+  f_minus = abs(.5-fm_err);
+elseif ftype==3
+  %%%
+  % EXP 3 
+  f_plus = [1-fp_sen; 1-fp_spe; fp_err];
+  f_minus = abs(.5-fm_err);
+elseif ftype==4
+  %%%
+  % EXP 4 
+  f_plus = [1-fp_sen; 1-fp_spe; fp_err];
+  f_minus = [abs(.5-fm_err); abs(.5-fm_sen); abs(.5-fm_spe)];
+elseif ftype==5
+  %%%
+  % EXP 5 
+  f_plus = [1-fp_sen; 1-fp_spe; fp_err];
+  f_minus = [abs(.5-fm_err); abs(.5-fm_sen); abs(.5-fm_spe)];
+end
 
 f = [f_plus; f_minus];

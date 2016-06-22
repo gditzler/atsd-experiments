@@ -5,6 +5,7 @@ close all;
 addpath('atsd/');
 addpath('utils/');
 data_pth = '/scratch/ditzler/Git/ClassificationDatasets/csv/';
+% data_pth = '~/Git/ClassificationDatasets/csv/';
 
 all_datas = {
   'bank';
@@ -61,6 +62,7 @@ global LAMBDA;
 LAMBDA = .5;
 timerz =[];
 n_shuffles = 10;
+ftypes = 5;
 
 filenames = {};
 for n = 1:length(all_datas)
@@ -68,6 +70,7 @@ for n = 1:length(all_datas)
 end
 % PartData(randseed, .8, filenames);
 
+timerz = zeros(length(all_datas), ftypes);
 
 for n = 1:n_shuffles
   disp(['Average ', num2str(n), ' of ', num2str(n_shuffles)]);
@@ -76,49 +79,52 @@ for n = 1:n_shuffles
   for i = 1:length(all_datas)
     DATASETZ = [data_pth, all_datas{i}, '_train.csv'];
     disp(['  -> Running ', DATASETZ])
-    try 
-      % some of the data sets throw an error with matlabs support vector
-      % machine, so catch the error rather breaking the program
-      tic;
-      [x, f, exitflag] = anti_training(params, moo);
-      timerz(end+1) = toc;
-      
-      datatr = load([data_pth, all_datas{i}, '_train.csv']);
-      datate = load([data_pth, all_datas{i}, '_test.csv']);
-      
-      err_best = 10000000000000;
-      options.MaxIter = 100000;
-      calc_error = @(actual, prediction)(sum(actual ~= prediction)/length(prediction));
-      
-      for j = 1:size(x, 2)
-        svm_struct = svmtrain(datatr(:, 1:end-1), datatr(:, end), ...
-          'kernel_function', 'rbf', ...
-          'rbf_sigma', x(j, 2), ...
-          'boxconstraint', x(j, 1), ...
-          'method', 'SMO', ...
-          'tolkkt', 1e-4, ...
-          'kktviolationlevel', 0.15, ...
-          'options', options);
-        yhat = svmclassify(svm_struct, datate(:, 1:end-1));
-        err = calc_error(yhat, datate(:, end));
-        if err<err_best
-          err_best = err;
-          min_param = x(j, :);
+    
+    for a = 1:ftypes
+      try 
+        % some of the data sets throw an error with matlabs support vector
+        % machine, so catch the error rather breaking the program
+        tic;
+        [x, f, exitflag] = anti_training(params, moo, a);
+        timerz(i, a) = timerz(i, a) + toc;
+
+        datatr = load([data_pth, all_datas{i}, '_train.csv']);
+        datate = load([data_pth, all_datas{i}, '_test.csv']);
+
+        err_best = 10000000000000;
+        options.MaxIter = 100000;
+        calc_error = @(actual, prediction)(sum(actual ~= prediction)/length(prediction));
+
+        for j = 1:size(x, 1)
+          svm_struct = svmtrain(datatr(:, 1:end-1), datatr(:, end), ...
+            'kernel_function', 'rbf', ...
+            'rbf_sigma', x(j, 2), ...
+            'boxconstraint', x(j, 1), ...
+            'method', 'SMO', ...
+            'tolkkt', 1e-4, ...
+            'kktviolationlevel', 0.15, ...
+            'options', options);
+          yhat = svmclassify(svm_struct, datate(:, 1:end-1));
+          err = calc_error(yhat, datate(:, end));
+          if err<err_best
+            err_best = err;
+            min_param = x(j, :);
+          end
         end
+
+
+        svstr = ['outputs/result_', all_datas{i}];
+        if moo == 1
+          svstr = [svstr, '_moo_exp0', num2str(a),'_', num2str(n),'.mat'];
+        elseif moo == 2
+          svstr = [svstr, '_soo_sa0', num2str(a),'_', num2str(n),'.mat'];
+        elseif moo == 3
+          svstr = [svstr, '_soo_ga0', num2str(a),'_', num2str(n),'.mat'];
+        end
+        save(svstr);
+      catch 
+        disp(['   Error in ', all_datas{i}]);
       end
-      
-      
-      svstr = ['outputs/result_', all_datas{i}];
-      if moo == 1
-        svstr = [svstr, '_moo_exp04_', num2str(n),'.mat'];
-      elseif moo == 2
-        svstr = [svstr, '_soo_sa_', num2str(n),'.mat'];
-      elseif moo == 3
-        svstr = [svstr, '_soo_ga_', num2str(n),'.mat'];
-      end
-      save(svstr);
-    catch 
-      disp(['   Error in ', all_datas{i}]);
     end
   end
 end

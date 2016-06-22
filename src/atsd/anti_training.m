@@ -1,13 +1,10 @@
-function [x, f, exitflag] = anti_training(params, moo)
+function [x, f, exitflag] = anti_training(params, moo, ftype)
 % params
 %   .PopulationSize
 %   .nvar
 global DATASETZ;
 global LAMBDA;
 
-% X = load(DATASETZ);
-% [~, nf] = size(X);
-% nf = nf - 1;
 
 Aineq = [];
 bineq = [];
@@ -21,7 +18,7 @@ ub = [1000; 5];
 
 if moo == 1
   optimoptions = gaoptimset('PopulationSize', params.PopulationSize, 'UseParallel', true);
-  [x, f, exitflag] = gamultiobj(@(x)(atsd_wrapper(x, DATASETZ)), ...
+  [x, f, exitflag] = gamultiobj(@(x)(atsd_wrapper_moo(x, DATASETZ, ftype)), ...
     params.nvar, Aineq, bineq, A, b, lb, ub, optimoptions);
 elseif moo == 2
   optimoptions = saoptimset();
