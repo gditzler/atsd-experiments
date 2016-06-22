@@ -7,7 +7,7 @@ addpath('utils/');
 data_pth = '/scratch/ditzler/Git/ClassificationDatasets/csv/';
 
 all_datas = {
-  'bank';
+  %'bank';
   'blood';
   'breast-cancer-wisc-diag';
   'breast-cancer-wisc-prog';
@@ -82,10 +82,12 @@ for n = 1:n_shuffles
       [x, f, exitflag] = anti_training(params, moo);
       timerz(end+1) = toc;
       
-      datatr = load([data_pth, all_datas{i}, '_test.csv']);
+      datatr = load([data_pth, all_datas{i}, '_train.csv']);
       datate = load([data_pth, all_datas{i}, '_test.csv']);
       
       err_best = 10000000000000;
+      options.MaxIter = 100000;
+      calc_error = @(actual, prediction)(sum(actual ~= prediction)/length(prediction));
       
       for j = 1:size(x, 2)
         svm_struct = svmtrain(datatr(:, 1:end-1), datatr(:, end), ...
