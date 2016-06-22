@@ -117,15 +117,15 @@ for n = 1:n_shuffles
         all_errors_moo(i, a) = all_errors_moo(i, a) + err_best;
         counts_errors_moo(i, a) = counts_errors_moo(i, a) + 1;
 
-        svstr = ['outputs/result_', all_datas{i}];
-        if moo == 1
-          svstr = [svstr, '_moo_exp0', num2str(a),'_', num2str(n),'.mat'];
-        elseif moo == 2
-          svstr = [svstr, '_soo_sa0', num2str(a),'_', num2str(n),'.mat'];
-        elseif moo == 3
-          svstr = [svstr, '_soo_ga0', num2str(a),'_', num2str(n),'.mat'];
-        end
-        save(svstr);
+        %svstr = ['outputs/result_', all_datas{i}];
+        %if moo == 1
+        %  svstr = [svstr, '_moo_exp0', num2str(a),'_', num2str(n),'.mat'];
+        %elseif moo == 2
+        %  svstr = [svstr, '_soo_sa0', num2str(a),'_', num2str(n),'.mat'];
+        %elseif moo == 3
+        %  svstr = [svstr, '_soo_ga0', num2str(a),'_', num2str(n),'.mat'];
+        %end
+        %save(svstr);
       catch 
         disp(['   Error in ', all_datas{i}]);
       end
@@ -133,5 +133,6 @@ for n = 1:n_shuffles
   end
 end
 
+save('outputs/moo_optimizer_alldatasets.mat');
 
 

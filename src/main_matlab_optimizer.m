@@ -98,13 +98,13 @@ for n = 1:n_shuffles
       all_errors_mat(i) = all_errors_mat(i) + err_best;
       counts_errors_mat(i) = counts_errors_mat(i) + 1;
       
-      svstr = ['outputs/result_', all_datas{i}, '_matlab_', num2str(n),'.mat'];
-      save(svstr);
+      %svstr = ['outputs/result_', all_datas{i}, '_matlab_', num2str(n),'.mat'];
+      %save(svstr);
     catch 
       disp(['   Error in ', all_datas{i}]);
     end
   end
 end
 
-
+save('outputs/matlab_optimizer_alldatasets.mat');
 
