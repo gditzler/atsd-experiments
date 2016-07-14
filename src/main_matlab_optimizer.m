@@ -34,7 +34,7 @@ all_datas = {
   %'pittsburg-bridges-T-OR-D';
   'planning';
   'ringnorm';
-  'spambase';
+  %'spambase';
   'spectf_train';
   'statlog-australian-credit';
   'statlog-german-credit';
@@ -56,7 +56,7 @@ timerz = [];
 n_shuffles = 20;
 
 filenames = {};
-for n = 1:nd
+for n = 1:length(all_datas)
   filenames{n} = [data_pth, all_datas{n}, '.csv'];
 end
 % PartData(randseed, .8, filenames);
@@ -66,10 +66,10 @@ counts_errors_mat = zeros(length(all_datas), 1);
 
 
 for n = 1:n_shuffles
-  PartData(n, .8, filenames);
+  PartData(n+10, .8, filenames);
   for i = 1:length(all_datas)
     DATASETZ = [data_pth, all_datas{i}, '_train.csv'];
-    disp(['Running ', DATASETZ])
+    disp(['Running ', DATASETZ, '   (',num2str(n),')'])
     try 
       % some of the data sets throw an error with matlabs support vector
       % machine, so catch the error rather breaking the program
@@ -104,6 +104,8 @@ for n = 1:n_shuffles
       disp(['   Error in ', all_datas{i}]);
     end
   end
+  save('outputs/matlab_optimizer_alldatasets.mat');
+
 end
 
 save('outputs/matlab_optimizer_alldatasets.mat');
