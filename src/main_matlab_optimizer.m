@@ -63,7 +63,7 @@ end
 
 all_errors_mat = zeros(length(all_datas), 1);
 counts_errors_mat = zeros(length(all_datas), 1);
-
+all_fms_moo = zeros(length(all_datas), 1);
 
 for n = 1:n_shuffles
   PartData(n+10, .8, filenames);
@@ -94,7 +94,10 @@ for n = 1:n_shuffles
         'options', options);
       yhat = svmclassify(svm_struct, datate(:, 1:end-1));
       err_best = calc_error(yhat, datate(:, end));
+      stats = confusionStats(datate(:, end), yhat);
+      fms_best = mean(stats.Fscore);
       
+      all_fms_moo(i) = all_fms_moo(i) + fms_best;
       all_errors_mat(i) = all_errors_mat(i) + err_best;
       counts_errors_mat(i) = counts_errors_mat(i) + 1;
       

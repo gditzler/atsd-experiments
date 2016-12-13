@@ -74,6 +74,7 @@ timerz = zeros(length(all_datas), ftypes);
 
 all_errors_moo = zeros(length(all_datas), ftypes);
 counts_errors_moo = zeros(length(all_datas), ftypes);
+all_fms_moo = zeros(length(all_datas), ftypes);
 
 for n = 1:n_shuffles
   disp(['Average ', num2str(n), ' of ', num2str(n_shuffles)]);
@@ -111,9 +112,13 @@ for n = 1:n_shuffles
           err = calc_error(yhat, datate(:, end));
           if err<err_best
             err_best = err;
+            stats = confusionmatStats(datate(:, end), yhat);
+            fms_best = mean(stats.Fscore);
             min_param = x(j, :);
           end
         end
+
+        all_fms_moo(i, a) = all_fms_moo(i, a) + fms_best;
         all_errors_moo(i, a) = all_errors_moo(i, a) + err_best;
         counts_errors_moo(i, a) = counts_errors_moo(i, a) + 1;
 
