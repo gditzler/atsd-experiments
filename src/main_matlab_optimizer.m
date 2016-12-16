@@ -94,7 +94,7 @@ for n = 1:n_shuffles
         'options', options);
       yhat = svmclassify(svm_struct, datate(:, 1:end-1));
       err_best = calc_error(yhat, datate(:, end));
-      stats = confusionStats(datate(:, end), yhat);
+      stats = confusionmatStats(datate(:, end), yhat);
       fms_best = mean(stats.Fscore);
       
       all_fms_moo(i) = all_fms_moo(i) + fms_best;
