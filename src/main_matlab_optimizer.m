@@ -7,7 +7,7 @@ addpath('utils/');
 data_pth = '/scratch/ditzler/Git/ClassificationDatasets/csv/';
 
 all_datas = {
-  'bank';
+  %'bank';
   'blood';
   'breast-cancer-wisc-diag';
   'breast-cancer-wisc-prog';
@@ -40,7 +40,7 @@ all_datas = {
   'statlog-german-credit';
   'statlog-heart';
   'titanic';
-  'twonorm';
+  %'twonorm';
   'vertebral-column-2clases'};
 
 
@@ -63,7 +63,7 @@ end
 
 all_errors_mat = zeros(length(all_datas), 1);
 counts_errors_mat = zeros(length(all_datas), 1);
-
+all_fms_moo = zeros(length(all_datas), 1);
 
 for n = 1:n_shuffles
   PartData(n+10, .8, filenames);
@@ -94,12 +94,12 @@ for n = 1:n_shuffles
         'options', options);
       yhat = svmclassify(svm_struct, datate(:, 1:end-1));
       err_best = calc_error(yhat, datate(:, end));
+      stats = confusionmatStats(datate(:, end), yhat);
+      fms_best = mean(stats.Fscore);
       
+      all_fms_moo(i) = all_fms_moo(i) + fms_best;
       all_errors_mat(i) = all_errors_mat(i) + err_best;
       counts_errors_mat(i) = counts_errors_mat(i) + 1;
-      
-      %svstr = ['outputs/result_', all_datas{i}, '_matlab_', num2str(n),'.mat'];
-      %save(svstr);
     catch 
       disp(['   Error in ', all_datas{i}]);
     end

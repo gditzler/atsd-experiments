@@ -8,7 +8,7 @@ data_pth = '/scratch/ditzler/Git/ClassificationDatasets/csv/';
 % data_pth = '~/Git/ClassificationDatasets/csv/';
 
 all_datas = {
-  'bank';
+  %'bank';
   'blood';
   'breast-cancer-wisc-diag';
   'breast-cancer-wisc-prog';
@@ -35,13 +35,13 @@ all_datas = {
   %'pittsburg-bridges-T-OR-D';
   'planning';
   'ringnorm';
-  'spambase';
+  %'spambase';
   'spectf_train';
   'statlog-australian-credit';
   'statlog-german-credit';
   'statlog-heart';
   'titanic';
-  'twonorm';
+  %'twonorm';
   'vertebral-column-2clases'};
 
 % SVM specific
@@ -74,6 +74,7 @@ timerz = zeros(length(all_datas), ftypes);
 
 all_errors_moo = zeros(length(all_datas), ftypes);
 counts_errors_moo = zeros(length(all_datas), ftypes);
+all_fms_moo = zeros(length(all_datas), ftypes);
 
 for n = 1:n_shuffles
   disp(['Average ', num2str(n), ' of ', num2str(n_shuffles)]);
@@ -111,21 +112,16 @@ for n = 1:n_shuffles
           err = calc_error(yhat, datate(:, end));
           if err<err_best
             err_best = err;
+            stats = confusionmatStats(datate(:, end), yhat);
+            fms_best = mean(stats.Fscore);
             min_param = x(j, :);
           end
         end
+
+        all_fms_moo(i, a) = all_fms_moo(i, a) + fms_best;
         all_errors_moo(i, a) = all_errors_moo(i, a) + err_best;
         counts_errors_moo(i, a) = counts_errors_moo(i, a) + 1;
-
-        %svstr = ['outputs/result_', all_datas{i}];
-        %if moo == 1
-        %  svstr = [svstr, '_moo_exp0', num2str(a),'_', num2str(n),'.mat'];
-        %elseif moo == 2
-        %  svstr = [svstr, '_soo_sa0', num2str(a),'_', num2str(n),'.mat'];
-        %elseif moo == 3
-        %  svstr = [svstr, '_soo_ga0', num2str(a),'_', num2str(n),'.mat'];
-        %end
-        %save(svstr);
+        save('outputs/moo_optimizer_alldatasets.mat');
       catch 
         disp(['   Error in ', all_datas{i}]);
       end
