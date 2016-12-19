@@ -31,7 +31,8 @@ opts = optimset('TolX', 5e-4, 'TolFun', 5e-4);
 fval = zeros(n_runs, 1);
 z = zeros(n_runs, 2);
 parfor j = 1:n_runs
-    [searchmin, fval(j)] = fminsearch(minfn, 10*randn(2,1), opts);
+    zz = 5*randn(2,1);
+    [searchmin, fval(j)] = fminsearch(minfn, zz, opts);
     z(j,:) = exp(searchmin);
 end
 z = z(fval == min(fval),:);
