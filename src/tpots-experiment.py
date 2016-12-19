@@ -8,16 +8,11 @@ from tpot import TPOTClassifier
 from sklearn.metrics import f1_score
 from sklearn.model_selection import train_test_split
 
-
-
-
-
-
 def main():
 
   # set up the path to the data sets and the data were are going to experiment 
   # with 
-  base_path = '/Users/gditzler/Git/ClassificationDatasets/csv/'
+  base_path = '/scratch/ditzler/Git/ClassificationDatasets/csv/'
   data_setz = [#'bank';
     'blood',
     'breast-cancer-wisc-diag',
