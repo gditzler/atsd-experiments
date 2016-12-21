@@ -13,7 +13,7 @@ def main():
   # set up the path to the data sets and the data were are going to experiment 
   # with 
   base_path = '/scratch/ditzler/Git/ClassificationDatasets/csv/'
-  data_setz = [#'bank';
+  data_setz = [#'bank',
     'blood',
     'breast-cancer-wisc-diag',
     'breast-cancer-wisc-prog',
@@ -69,7 +69,7 @@ def main():
       m += 1
       
       ts = time.time()
-      tpot = TPOTClassifier(generations=5, population_size=20, verbosity=1)
+      tpot = TPOTClassifier(generations=10, population_size=25, verbosity=1)
       tpot.fit(X_train, y_train)
       times[i] += (time.time() - ts)
 
@@ -82,7 +82,7 @@ def main():
   times /= n_splitz
 
   df = pd.DataFrame({'errors': errors, 'fms': fms, 'times': times})
-  df.to_csv(path_or_buf='tpot-results.csv', sep=',')
+  df.to_csv(path_or_buf='tpot-results2.csv', sep=',')
 
   return None 
 

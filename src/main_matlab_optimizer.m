@@ -53,7 +53,7 @@ global LAMBDA;
 LAMBDA = .5;
 timerz = [];
 
-n_shuffles = 20;
+n_shuffles = 10;
 
 filenames = {};
 for n = 1:length(all_datas)
@@ -64,6 +64,7 @@ end
 all_errors_mat = zeros(length(all_datas), 1);
 counts_errors_mat = zeros(length(all_datas), 1);
 all_fms_moo = zeros(length(all_datas), 1);
+timerz2 = zeros(length(all_datas), 1);
 
 for n = 1:n_shuffles
   PartData(n+10, .8, filenames);
@@ -75,7 +76,8 @@ for n = 1:n_shuffles
       % machine, so catch the error rather breaking the program
       tic;
       [x, f] = svm_search_matlab(DATASETZ);
-      timerz(end+1) = toc;
+      timerz2(i) = timerz2(i) + toc;
+
       
       datatr = load([data_pth, all_datas{i}, '_train.csv']);
       datate = load([data_pth, all_datas{i}, '_test.csv']);
@@ -108,5 +110,6 @@ for n = 1:n_shuffles
 
 end
 
+timerz2 = timerz2/n_shuffles;
 save('outputs/matlab_optimizer_alldatasets.mat');
 
