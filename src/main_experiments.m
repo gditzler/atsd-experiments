@@ -76,6 +76,7 @@ timerz = zeros(length(all_datas), ftypes);
 all_errors_moo = zeros(length(all_datas), ftypes);
 counts_errors_moo = zeros(length(all_datas), ftypes);
 all_fms_moo = zeros(length(all_datas), ftypes);
+all_errors_avg_moo = zeros(length(all_datas), ftypes);
 
 for n = 1:n_shuffles
   disp(['Average ', num2str(n), ' of ', num2str(n_shuffles)]);
@@ -95,11 +96,12 @@ for n = 1:n_shuffles
 
         datatr = load([data_pth, all_datas{i}, '_train.csv']);
         datate = load([data_pth, all_datas{i}, '_test.csv']);
-
+                
         err_best = 10000000000000;
         options.MaxIter = 100000;
         calc_error = @(actual, prediction)(sum(actual ~= prediction)/length(prediction));
-
+        err_avg = 0;
+        
         for j = 1:size(x, 1)
           svm_struct = svmtrain(datatr(:, 1:end-1), datatr(:, end), ...
             'kernel_function', 'rbf', ...
@@ -109,18 +111,21 @@ for n = 1:n_shuffles
             'tolkkt', 1e-4, ...
             'kktviolationlevel', 0.15, ...
             'options', options);
-          yhat = svmclassify(svm_struct, datate(:, 1:end-1));
-          err = calc_error(yhat, datate(:, end));
+          yhat = svmclassify(svm_struct, datatev(:, 1:end-1));
+          err = calc_error(yhat, datatev(:, end));
           if err<err_best
             err_best = err;
-            stats = confusionmatStats(datate(:, end), yhat);
+            stats = confusionmatStats(datatev(:, end), yhat);
             fms_best = mean(stats.Fscore);
             min_param = x(j, :);
           end
+          err_avg = err_avg+err;
         end
 
         all_fms_moo(i, a) = all_fms_moo(i, a) + fms_best;
         all_errors_moo(i, a) = all_errors_moo(i, a) + err_best;
+        all_errors_avg_moo(i, a) = all_errors_avg_moo(i, a) + err_avg/size(x, 1);
+        
         counts_errors_moo(i, a) = counts_errors_moo(i, a) + 1;
         save('outputs/moo_optimizer_alldatasets.mat');
       catch 
@@ -130,6 +135,6 @@ for n = 1:n_shuffles
   end
 end
 
-save('outputs/moo_optimizer_alldatasets.mat');
+save('outputs/moo_optimizer_alldatasets_2.mat');
 
 
