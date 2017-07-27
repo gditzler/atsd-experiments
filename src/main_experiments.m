@@ -77,6 +77,7 @@ all_errors_moo = zeros(length(all_datas), ftypes);
 counts_errors_moo = zeros(length(all_datas), ftypes);
 all_fms_moo = zeros(length(all_datas), ftypes);
 all_errors_avg_moo = zeros(length(all_datas), ftypes);
+all_3errors_avg_moo = zeros(length(all_datas), ftypes);
 
 for n = 1:n_shuffles
   disp(['Average ', num2str(n), ' of ', num2str(n_shuffles)]);
@@ -101,6 +102,7 @@ for n = 1:n_shuffles
         options.MaxIter = 100000;
         calc_error = @(actual, prediction)(sum(actual ~= prediction)/length(prediction));
         err_avg = 0;
+        err_3best = zeros(1, size(x, 1));
         
         for j = 1:size(x, 1)
           svm_struct = svmtrain(datatr(:, 1:end-1), datatr(:, end), ...
@@ -120,11 +122,20 @@ for n = 1:n_shuffles
             min_param = x(j, :);
           end
           err_avg = err_avg+err;
+          err_3best(j) = err;
         end
 
         all_fms_moo(i, a) = all_fms_moo(i, a) + fms_best;
         all_errors_moo(i, a) = all_errors_moo(i, a) + err_best;
         all_errors_avg_moo(i, a) = all_errors_avg_moo(i, a) + err_avg/size(x, 1);
+        
+        err_3best = sort(err_3best);
+        if size(x, 1) < 3
+          merr = mean(err_3best);
+        else
+          merr = mean(err_3best(1:3));
+        end
+        all_3errors_avg_moo(i, a) = all_3errors_avg_moo(i, a) + merr;
         
         counts_errors_moo(i, a) = counts_errors_moo(i, a) + 1;
         save('outputs/moo_optimizer_alldatasets_2.mat');
