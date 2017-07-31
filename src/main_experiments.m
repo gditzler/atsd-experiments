@@ -113,11 +113,11 @@ for n = 1:n_shuffles
             'tolkkt', 1e-4, ...
             'kktviolationlevel', 0.15, ...
             'options', options);
-          yhat = svmclassify(svm_struct, datatev(:, 1:end-1));
-          err = calc_error(yhat, datatev(:, end));
+          yhat = svmclassify(svm_struct, datate(:, 1:end-1));
+          err = calc_error(yhat, datate(:, end));
           if err<err_best
             err_best = err;
-            stats = confusionmatStats(datatev(:, end), yhat);
+            stats = confusionmatStats(datate(:, end), yhat);
             fms_best = mean(stats.Fscore);
             min_param = x(j, :);
           end
