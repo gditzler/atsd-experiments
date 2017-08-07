@@ -129,16 +129,16 @@ for n = 1:n_shuffles
         all_errors_moo(i, a) = all_errors_moo(i, a) + err_best;
         all_errors_avg_moo(i, a) = all_errors_avg_moo(i, a) + err_avg/size(x, 1);
         
-        err_3best = sort(err_3best);
-        if size(x, 1) < 3
-          merr = mean(err_3best);
-        else
-          merr = mean(err_3best(1:3));
-        end
-        all_3errors_avg_moo(i, a) = all_3errors_avg_moo(i, a) + merr;
+        %err_3best = sort(err_3best);
+        %if size(x, 1) < 3
+        %  merr = mean(err_3best);
+        %else
+        %  merr = mean(err_3best(1:3));
+        %end
+        all_3errors_avg_moo(i, a) = all_3errors_avg_moo(i, a) + mean(err_3best);
         
         counts_errors_moo(i, a) = counts_errors_moo(i, a) + 1;
-        save('outputs/moo_optimizer_alldatasets_2.mat');
+        save('outputs/moo_optimizer_alldatasets_3.mat');
       %catch 
       %  disp(['   Error in ', all_datas{i}]);
       %end
@@ -146,6 +146,6 @@ for n = 1:n_shuffles
   end
 end
 
-save('outputs/moo_optimizer_alldatasets_2.mat');
+save('outputs/moo_optimizer_alldatasets_3.mat');
 
 
