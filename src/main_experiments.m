@@ -4,8 +4,8 @@ close all;
 
 addpath('atsd/');
 addpath('utils/');
-% data_pth = '/scratch/ditzler/Git/ClassificationDatasets/csv/';
-data_pth = '~/Git/ClassificationDatasets/csv/';
+data_pth = '/scratch/ditzler/Git/ClassificationDatasets/csv/';
+% data_pth = '~/Git/ClassificationDatasets/csv/';
 
 all_datas = {
   %'bank';
@@ -78,6 +78,7 @@ counts_errors_moo = zeros(length(all_datas), ftypes);
 all_fms_moo = zeros(length(all_datas), ftypes);
 all_errors_avg_moo = zeros(length(all_datas), ftypes);
 all_3errors_avg_moo = zeros(length(all_datas), ftypes);
+all_3fms_avg_moo = zeros(length(all_datas), ftypes);
 
 for n = 1:n_shuffles
   disp(['Average ', num2str(n), ' of ', num2str(n_shuffles)]);
@@ -103,7 +104,7 @@ for n = 1:n_shuffles
         calc_error = @(actual, prediction)(sum(actual ~= prediction)/length(prediction));
         err_avg = 0;
         err_3best = zeros(1, size(x, 1));
-        
+        fms_3best = zeros(1, size(x, 1));
         for j = 1:size(x, 1)
           svm_struct = svmtrain(datatr(:, 1:end-1), datatr(:, end), ...
             'kernel_function', 'rbf', ...
@@ -123,6 +124,10 @@ for n = 1:n_shuffles
           end
           err_avg = err_avg+err;
           err_3best(j) = err;
+          
+          stats = confusionmatStats(datate(:, end), yhat);
+          fms_3best(j) = mean(stats.Fscore);
+            
         end
 
         all_fms_moo(i, a) = all_fms_moo(i, a) + fms_best;
@@ -136,6 +141,7 @@ for n = 1:n_shuffles
         %  merr = mean(err_3best(1:3));
         %end
         all_3errors_avg_moo(i, a) = all_3errors_avg_moo(i, a) + mean(err_3best);
+        all_3fms_avg_moo(i, a) = all_3fms_avg_moo(i, a) + mean(fms_3best);
         
         counts_errors_moo(i, a) = counts_errors_moo(i, a) + 1;
         save('outputs/moo_optimizer_alldatasets_3.mat');
