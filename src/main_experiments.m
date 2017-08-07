@@ -4,8 +4,8 @@ close all;
 
 addpath('atsd/');
 addpath('utils/');
-data_pth = '/scratch/ditzler/Git/ClassificationDatasets/csv/';
-% data_pth = '~/Git/ClassificationDatasets/csv/';
+% data_pth = '/scratch/ditzler/Git/ClassificationDatasets/csv/';
+data_pth = '~/Git/ClassificationDatasets/csv/';
 
 all_datas = {
   %'bank';
@@ -54,7 +54,7 @@ moo = 1;            % multi-objecive or single objective
 % parallel processing 
 if moo== 1 || moo == 3
  delete(gcp('nocreate'));  
- parpool(25, 'IdleTimeout', 180);
+ parpool(4, 'IdleTimeout', 180);
 end
 
 global DATASETZ;
@@ -88,7 +88,7 @@ for n = 1:n_shuffles
     disp(['  -> Running ', DATASETZ])
     
     for a = 1:ftypes
-      try 
+      %try 
         % some of the data sets throw an error with matlabs support vector
         % machine, so catch the error rather breaking the program
         tic;
@@ -113,7 +113,7 @@ for n = 1:n_shuffles
             'tolkkt', 1e-4, ...
             'kktviolationlevel', 0.15, ...
             'options', options);
-          yhat = svmclassify(svm_struct, datatev(:, 1:end-1));
+          yhat = svmclassify(svm_struct, datate(:, 1:end-1));
           err = calc_error(yhat, datatev(:, end));
           if err<err_best
             err_best = err;
@@ -139,9 +139,9 @@ for n = 1:n_shuffles
         
         counts_errors_moo(i, a) = counts_errors_moo(i, a) + 1;
         save('outputs/moo_optimizer_alldatasets_2.mat');
-      catch 
-        disp(['   Error in ', all_datas{i}]);
-      end
+      %catch 
+      %  disp(['   Error in ', all_datas{i}]);
+      %end
     end
   end
 end
