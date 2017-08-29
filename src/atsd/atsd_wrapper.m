@@ -10,7 +10,7 @@ labels  = X(:, end);  % labels are in the last dimension
 if length(unique(labels)) ~= 2
   error('Must be a two class problem.');
 end
-data = zscore(data);
+%data = zscore(data);
 
 [ns, nf] = size(data);
 q = randperm(ns);
