@@ -4,13 +4,14 @@ close all;
 
 addpath utils/
 
-
-load outputs/moo_optimizer_alldatasets.mat
+load outputs/moo_optimizer_alldatasets_3.mat
+%load outputs/moo_optimizer_alldatasets.mat
 all_datas_moo = all_datas;
 clearvars -except all_errors_moo all_errors_mat counts_errors_moo counts_errors_mat all_datas_moo all_fms_moo
 load outputs/matlab_optimizer_alldatasets.mat 
 all_fms_mat = all_fms_moo;
-load outputs/moo_optimizer_alldatasets.mat
+load outputs/moo_optimizer_alldatasets_3.mat
+% load outputs/moo_optimizer_alldatasets.mat
 clearvars -except all_errors_moo all_errors_mat counts_errors_moo counts_errors_mat all_datas all_fms_moo all_fms_mat
 % delete the spambase entry from MOO
 % all_errors_moo(26, :) = [];
@@ -26,21 +27,22 @@ alpha = 0.1;
 clrs = {'\cellcolor{red!50}', '\cellcolor{red!40}', '\cellcolor{red!30}', '\cellcolor{red!20}', '\cellcolor{red!10}'};
 % clrs = {' ', ' ', ' ', ' ', ' '};
 
-% errors = [all_fms_moo(:, 1:end-1) all_fms_mat];
-% counts = [counts_errors_moo(:, 1:end-1) counts_errors_mat];
-% errors = 1-errors./counts;
-% tpots = df.data(:,3);
-errors = [all_errors_moo(:, 1:end-1) all_errors_mat];
+errors = [all_fms_moo(:, 1:end-1) all_fms_mat];
 counts = [counts_errors_moo(:, 1:end-1) counts_errors_mat];
-errors = errors./counts;
-tpots = df.data(:,2);
+errors = 1-errors./counts;
+tpots = df.data(:,3);
+
+% errors = [all_errors_moo(:, 1:end-1) all_errors_mat];
+% counts = [counts_errors_moo(:, 1:end-1) counts_errors_mat];
+% errors = errors./counts;
+% tpots = df.data(:,2);
 
 [hZtest, pZtest, pFtest, ranks] = friedman_demsar(errors, tail, alpha);
 mean_ranks = mean(ranks);
 
 % errors = 1 - errors;
 
-disp('\bf Data Set & \bf Samples & \bf Features & \bf None & $\Fcal_1$ & \bf $\Fcal_2$ & $\Fcal_3$ & MAT\\')
+disp('\bf Data Set & \bf Samples & \bf Features & \bf None & $\Fcal_1$ & \bf $\Fcal_2$ & $\Fcal_3$ & MAT & TPOT \\')
 for i = 1:length(all_datas)
   st = all_datas{i};
   data = load(['~/Git/ClassificationDatasets/csv/', all_datas{i}, '.csv']);
