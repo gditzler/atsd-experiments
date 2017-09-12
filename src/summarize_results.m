@@ -4,14 +4,25 @@ close all;
 
 addpath utils/
 
+<<<<<<< HEAD
 
 load outputs/moo_optimizer_alldatasets_2.mat
+=======
+load outputs/moo_optimizer_alldatasets_3.mat
+%load outputs/moo_optimizer_alldatasets.mat
+>>>>>>> ad4d303b826ae042a897fb570d28c1426ee40858
 all_datas_moo = all_datas;
 clearvars -except all_errors_moo all_errors_mat counts_errors_moo counts_errors_mat all_datas_moo all_fms_moo all_3errors_avg_moo
 load outputs/matlab_optimizer_alldatasets.mat 
 all_fms_mat = all_fms_moo;
+<<<<<<< HEAD
 load outputs/moo_optimizer_alldatasets.mat
 clearvars -except all_errors_moo all_errors_mat counts_errors_moo counts_errors_mat all_datas all_fms_moo all_fms_mat all_3errors_avg_moo
+=======
+load outputs/moo_optimizer_alldatasets_3.mat
+% load outputs/moo_optimizer_alldatasets.mat
+clearvars -except all_errors_moo3 all_errors_mat counts_errors_moo counts_errors_mat all_datas all_fms_moo all_fms_mat
+>>>>>>> ad4d303b826ae042a897fb570d28c1426ee40858
 % delete the spambase entry from MOO
 % all_errors_moo(26, :) = [];
 % counts_errors_moo(26, :) = [];
@@ -32,21 +43,27 @@ clrs = {'\cellcolor{red!50}', '\cellcolor{red!40}', '\cellcolor{red!30}', '\cell
 % tpots = df.data(:,3);
 
 % USE THE 3 best average erros 
-all_errors_moo = all_3errors_avg_moo;
+% all_errors_moo = all_3errors_avg_moo;
 % all_errors_moo      & & & 3.8667 & 2.0667 & 2.6    & 2.5333 & 3.9333 \\
 % all_3errors_avg_moo & & & 3.05   & 3.4333 & 2.3833 & 2.3    & 3.8333 \\
 
-errors = [all_errors_moo(:, 1:end-1) all_errors_mat];
+% errors = [all_errors_moo(:, 1:end-1) all_errors_mat];
+errors = [all_fms_moo(:, 1:end-1) all_fms_mat];
 counts = [counts_errors_moo(:, 1:end-1) counts_errors_mat];
-errors = errors./counts;
-tpots = df.data(:,2);
+errors = 1-errors./counts;
+tpots = df.data(:,3);
+
+% errors = [all_errors_moo(:, 1:end-1) all_errors_mat];
+% counts = [counts_errors_moo(:, 1:end-1) counts_errors_mat];
+% errors = errors./counts;
+% tpots = df.data(:,2);
 
 [hZtest, pZtest, pFtest, ranks] = friedman_demsar(errors, tail, alpha);
 mean_ranks = mean(ranks);
 
-% errors = 1 - errors;
+errors = 1 - errors;
 
-disp('\bf Data Set & \bf Samples & \bf Features & \bf None & $\Fcal_1$ & \bf $\Fcal_2$ & $\Fcal_3$ & MAT\\')
+disp('\bf Data Set & \bf Samples & \bf Features & \bf None & $\Fcal_1$ & \bf $\Fcal_2$ & $\Fcal_3$ & MAT & TPOT \\')
 for i = 1:length(all_datas)
   st = all_datas{i};
   data = load(['~/Git/ClassificationDatasets/csv/', all_datas{i}, '.csv']);
