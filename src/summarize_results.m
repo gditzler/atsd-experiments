@@ -12,7 +12,7 @@ load outputs/matlab_optimizer_alldatasets.mat
 all_fms_mat = all_fms_moo;
 load outputs/moo_optimizer_alldatasets_3.mat
 % load outputs/moo_optimizer_alldatasets.mat
-clearvars -except all_errors_moo all_errors_mat counts_errors_moo counts_errors_mat all_datas all_fms_moo all_fms_mat
+clearvars -except all_errors_moo3 all_errors_mat counts_errors_moo counts_errors_mat all_datas all_fms_moo all_fms_mat
 % delete the spambase entry from MOO
 % all_errors_moo(26, :) = [];
 % counts_errors_moo(26, :) = [];
@@ -40,7 +40,7 @@ tpots = df.data(:,3);
 [hZtest, pZtest, pFtest, ranks] = friedman_demsar(errors, tail, alpha);
 mean_ranks = mean(ranks);
 
-% errors = 1 - errors;
+errors = 1 - errors;
 
 disp('\bf Data Set & \bf Samples & \bf Features & \bf None & $\Fcal_1$ & \bf $\Fcal_2$ & $\Fcal_3$ & MAT & TPOT \\')
 for i = 1:length(all_datas)
