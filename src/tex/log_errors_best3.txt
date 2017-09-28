@@ -1,0 +1,37 @@
+\bf Data Set & \bf Samples & \bf Features & \bf None & $Fcal_1$ & \bf $Fcal_2$ & $Fcal_3$ \\
+blood & 748 & 4 & \cellcolor{red!50} 21.4 (1) & \cellcolor{red!20} 22 (4) & \cellcolor{red!40} 21.44 (2) & \cellcolor{red!30} 21.69 (3) \\
+breast-cancer-wisc-diag & 569 & 30 & \cellcolor{red!50} 3.07 (1) & \cellcolor{red!30} 6.42 (3) & \cellcolor{red!40} 5.31 (2) & \cellcolor{red!20} 7.91 (4) \\
+breast-cancer-wisc-prog & 198 & 33 & \cellcolor{red!50} 20.5 (1) & \cellcolor{red!30} 22.17 (3) & \cellcolor{red!20} 22.25 (4) & \cellcolor{red!40} 21.08 (2) \\
+breast-cancer-wisc & 699 & 9 & \cellcolor{red!50} 5.14 (1) & \cellcolor{red!30} 6.19 (3) & \cellcolor{red!40} 5.48 (2) & \cellcolor{red!20} 6.43 (4) \\
+breast-cancer & 286 & 9 & \cellcolor{red!50} 31.38 (1) & \cellcolor{red!30} 32.18 (3) & \cellcolor{red!40} 31.61 (2) & \cellcolor{red!20} 32.47 (4) \\
+congressional-voting & 435 & 16 & \cellcolor{red!20} 40.34 (4) & \cellcolor{red!30} 39.28 (3) & \cellcolor{red!50} 39.02 (1) & \cellcolor{red!40} 39.17 (2) \\
+conn-bench-sonar-mines-rocks & 208 & 60 & \cellcolor{red!50} 23.1 (1) & \cellcolor{red!20} 27.62 (4) & \cellcolor{red!30} 26.83 (3) & \cellcolor{red!40} 24.92 (2) \\
+credit-approval & 690 & 15 & \cellcolor{red!50} 17.91 (1) & \cellcolor{red!20} 22.06 (4) & \cellcolor{red!30} 22.04 (3) & \cellcolor{red!40} 18.82 (2) \\
+cylinder-bands & 512 & 35 & \cellcolor{red!50} 33.4 (1) & \cellcolor{red!40} 34.82 (2) & \cellcolor{red!20} 36.25 (4) & \cellcolor{red!30} 35.11 (3) \\
+echocardiogram & 131 & 10 & \cellcolor{red!50} 19.26 (1) & \cellcolor{red!20} 25.19 (4) & \cellcolor{red!30} 25.06 (3) & \cellcolor{red!40} 23.21 (2) \\
+haberman-survival & 306 & 3 & \cellcolor{red!20} 25.97 (4) & \cellcolor{red!50} 25.48 (1) & \cellcolor{red!40} 25.65 (2) & \cellcolor{red!30} 25.7 (3) \\
+heart-hungarian & 294 & 12 & \cellcolor{red!50} 20.85 (1) & \cellcolor{red!20} 28.53 (4) & \cellcolor{red!30} 26.05 (3) & \cellcolor{red!40} 21.86 (2) \\
+hepatitis & 155 & 19 & \cellcolor{red!20} 22.19 (4) & \cellcolor{red!30} 21.46 (3) & \cellcolor{red!50} 21.25 (1) & \cellcolor{red!40} 21.35 (2) \\
+ionosphere & 351 & 33 & \cellcolor{red!50} 11.83 (1) & \cellcolor{red!30} 16.34 (3) & \cellcolor{red!20} 18.36 (4) & \cellcolor{red!40} 15.77 (2) \\
+mammographic & 961 & 5 & \cellcolor{red!50} 17.41 (1) & \cellcolor{red!20} 19.52 (4) & \cellcolor{red!40} 19.1 (2) & \cellcolor{red!30} 19.43 (3) \\
+molec-biol-promoter & 106 & 57 & \cellcolor{red!50} 24.09 (1) & \cellcolor{red!20} 28.33 (4) & \cellcolor{red!30} 26.67 (3) & \cellcolor{red!40} 25 (2) \\
+musk-1 & 476 & 166 & \cellcolor{red!30} 21.04 (3) & \cellcolor{red!40} 20.63 (2) & \cellcolor{red!50} 20.52 (1) & \cellcolor{red!20} 21.15 (4) \\
+oocytes-merluccius-nucleus-4d & 1022 & 41 & \cellcolor{red!50} 23.9 (1) & \cellcolor{red!20} 27.22 (4) & \cellcolor{red!30} 25.76 (3) & \cellcolor{red!40} 23.93 (2) \\
+oocytes-trisopterus-nucleus-2f & 912 & 25 & \cellcolor{red!40} 27.32 (2) & \cellcolor{red!30} 29.56 (3) & \cellcolor{red!50} 27.05 (1) & \cellcolor{red!20} 29.73 (4) \\
+ozone & 2536 & 72 & \cellcolor{red!40} 2.68 (2.5) & \cellcolor{red!40} 2.68 (2.5) & \cellcolor{red!20} 2.79 (4) & \cellcolor{red!50} 2.66 (1) \\
+parkinsons & 195 & 22 & \cellcolor{red!50} 15.5 (1) & \cellcolor{red!20} 21.08 (4) & \cellcolor{red!30} 20.96 (3) & \cellcolor{red!40} 19.5 (2) \\
+pima & 768 & 8 & \cellcolor{red!40} 26.23 (2) & \cellcolor{red!30} 28.21 (3) & \cellcolor{red!20} 28.7 (4) & \cellcolor{red!50} 25.97 (1) \\
+planning & 182 & 12 & \cellcolor{red!20} 28.65 (4) & \cellcolor{red!30} 28.11 (3) & \cellcolor{red!50} 27.93 (1) & \cellcolor{red!40} 28.02 (2) \\
+ringnorm & 7400 & 20 & \cellcolor{red!50} 23.18 (1) & \cellcolor{red!20} 25.59 (4) & \cellcolor{red!30} 23.51 (3) & \cellcolor{red!40} 23.2 (2) \\
+spectf & 80 & 44 & \cellcolor{red!50} 42.35 (1) & \cellcolor{red!20} 48.43 (4) & \cellcolor{red!30} 44.31 (3) & \cellcolor{red!40} 43.53 (2) \\
+statlog-australian-credit & 690 & 14 & \cellcolor{red!20} 31.15 (4) & \cellcolor{red!40} 31.01 (2) & \cellcolor{red!30} 31.12 (3) & \cellcolor{red!50} 30.98 (1) \\
+statlog-german-credit & 1000 & 24 & \cellcolor{red!40} 25.57 (2) & \cellcolor{red!20} 27.51 (4) & \cellcolor{red!30} 26.97 (3) & \cellcolor{red!50} 25.51 (1) \\
+statlog-heart & 270 & 13 & \cellcolor{red!50} 17.64 (1) & \cellcolor{red!40} 21.12 (2) & \cellcolor{red!30} 21.85 (3) & \cellcolor{red!20} 22.42 (4) \\
+titanic & 2201 & 3 & \cellcolor{red!40} 23.74 (2) & \cellcolor{red!20} 26.36 (4) & \cellcolor{red!30} 24.66 (3) & \cellcolor{red!50} 23.63 (1) \\
+vertebral-column-2clases & 310 & 6 & \cellcolor{red!40} 19.52 (2) & \cellcolor{red!30} 20.4 (3) & \cellcolor{red!20} 24.92 (4) & \cellcolor{red!50} 18.57 (1) \\
+ & & & 1.7833 & 3.2167 & 2.6667 & 2.3333 \\
+ & None & $Fcal_1$ & $Fcal_2$ & $Fcal_3$ \\
+None & -- & 8.5399e-06 & 0.0040246 & 0.049471 \\
+$Fcal_1$ & 0.99999 & -- & 0.95053 & 0.99598 \\
+$Fcal_2$ & 0.99598 & 0.049471 & -- & 0.84134 \\
+$Fcal_3$ & 0.95053 & 0.0040246 & 0.15866 & -- \\
