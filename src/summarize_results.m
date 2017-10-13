@@ -30,7 +30,7 @@ clearvars -except all_errors_moo all_errors_mat counts_errors_moo counts_errors_
 
 df = importdata('tpot-results.csv');
 
-print_fm = 1;
+print_fm = 0;
 alpha = 0.1;
 
 algs = {'None', '$\Fcal_1$', '$\Fcal_2$', '$\Fcal_3$', '$MAT$'};
@@ -263,3 +263,40 @@ for i = 1:size(ranks, 2)
   end
   disp([st, ' \\'])
 end
+%% analyze other classifiers 
+clc
+clear
+close all 
+
+
+% logistic regression 
+R = [1.7833 3.2167 2.6667 2.3333]; % error
+%R = [3.6333 2.2 2.2167 1.95];      % fscore
+% knn 
+%R = [2.7833 2.7833 2.3833 2.0];    % error
+%R = [3.5333 2.7 2.2 1.5667];       % fscore
+% cart
+%R = [2.6333 3.1167 2.5333 1.7167]; % error
+%R = [3.9 2.2667 2.3167 1.5167];    % fscore
+
+alpha = 0.01;
+k = 4; 
+N = 30; 
+chi2 = (12*N)/(k*(k+1))*(sum(R.^2)-k*(k+1)^2/4);
+Ff = (N-1)*chi2/(N*(k-1)-chi2);
+pFtest = 1 - fcdf(Ff,k-1,(k-1)*(N-1)); % pvalue for the f-test
+
+z = zeros(k,k);
+for j = 1:k
+  for i = 1:k
+    z(j,i) = (R(j)-R(i))/(sqrt(k*(k+1)/(6*N)));
+  end
+end
+
+if pFtest < alpha
+  disp('Reject the Null Hypothesis (based on Friedman)')
+else
+  disp('Accept the Null Hypothesis (based on Friedman)')
+end
+p = normcdf(z);
+p
